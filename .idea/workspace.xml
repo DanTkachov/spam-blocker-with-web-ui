@@ -5,14 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1bc9f572-3a2c-4e35-be12-9d6643c3dd41" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/spam-blocker.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/spam.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/spam_blocker.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spam_blocker.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/spam_blocker.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,7 +83,8 @@
       <workItem from="1715109057549" duration="374000" />
       <workItem from="1715362945823" duration="4359000" />
       <workItem from="1715369389200" duration="2104000" />
-      <workItem from="1715457679895" duration="4794000" />
+      <workItem from="1715457679895" duration="6054000" />
+      <workItem from="1715557528264" duration="343000" />
     </task>
     <servers />
   </component>
