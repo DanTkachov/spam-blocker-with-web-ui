@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://unpkg.com/htmx.org@1.9.12"
+            integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2"
+            crossorigin="anonymous"></script>
 </head>
 <body>
 <script>
@@ -21,7 +24,7 @@
             })
             .catch(error =>{
                 console.error('Error: ', error);
-                resultDiv.textContent = 'An error as occurred: ' + error
+                resultDiv.textContent = 'An error has occurred: ' + error
             })
     }
 </script>
@@ -33,5 +36,41 @@
 </form>
 <br>
 <div id="result"></div>
+
+
+<p>Past queries</p>
+<div id="queries"></div>
+
+<script>
+    document.addEventListener('input', function(event) {
+        console.log('here')
+        if (event.target.id === 'email') {
+            const input = event.target.value;
+            const recentInputs = JSON.parse(localStorage.getItem('recentInputs')) || [];
+            console.log(input)
+
+            // Add the current input to the recent inputs array
+            recentInputs.push(input);
+
+            // Limit the number of recent inputs to a maximum of 5
+            if (recentInputs.length > 5) {
+                recentInputs.shift();
+            }
+
+            // Store the updated recent inputs array in local storage
+            localStorage.setItem('recentInputs', JSON.stringify(recentInputs));
+
+            // Update the recent inputs div with the latest inputs
+            const recentInputsDiv = document.getElementById('queries');
+            recentInputsDiv.innerHTML = `
+      <h4>Recent Inputs:</h4>
+      <ul>
+        ${recentInputs.map(input => `<li>${input}</li>`).join('')}
+      </ul>
+    `;
+        }
+    });
+</script>
+
 </body>
 </html>

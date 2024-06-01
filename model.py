@@ -1,7 +1,6 @@
 import random
 import pickle
-from sklearn.feature_extraction.text import TfidfVectorizer
-
+import tensorflow as tf
 
 
 def dummy_predict():
@@ -24,9 +23,13 @@ def model_predict(model, email, vectorizer=None) -> str:
     elif vectorizer is None:
         print("Vectorizer not set or failed to load; check vectorizer.pkl file")
     else:
-        print(email, type(email))
-        email_tfidf = vectorizer.transform([email])
-        print("Transformed email shape:", email_tfidf.shape)
-        pred = model.predict(email_tfidf)[0]
-        print("(model.py) Prediction: ", pred)
-        return "Spam" if pred >= 0.4 else "Not Spam"
+        try:
+            print(email, type(email))
+            email_tfidf = vectorizer.transform([email])
+            print("Transformed email shape:", email_tfidf.shape)
+            pred = model.predict(email_tfidf)[0]
+            print("(model.py) Prediction: ", pred)
+            return "Spam" if pred >= 0.4 else "Not Spam"
+        except (tf.errors.InvalidArgumentError) as e:
+            return f"Error: no words or phrases in the input were present in the training data. Try again.\n\nFull error: {e}"
+
