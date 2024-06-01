@@ -14,6 +14,7 @@
         let resultDiv = document.getElementById('result')
         let emailText = emailInput.value
 
+        // Fetch AI result from backend
         fetch('http://localhost:5555/predict', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
@@ -21,6 +22,21 @@
         }).then(response => response.json())
             .then(data => {
                 resultDiv.textContent = 'Prediction: ' + data.result
+
+                // Store the lastest inputs for htmx to display
+                const recentInputs = JSON.parse(localStorage.getItem('recentInputs')) || [];
+                recentInputs.unshift(emailText + '    Verdict: ' + data.result)
+                if(recentInputs.length > 5){
+                    recentInputs.pop()
+                }
+                localStorage.setItem('recentInputs', JSON.stringify(recentInputs));
+                const recentInputsDiv = document.getElementById('queries');
+                recentInputsDiv.innerHTML = `
+              <h4>Recent Inputs:</h4>
+              <ul>
+                ${recentInputs.map(input => `<li>${input}</li>`).join('')}
+              </ul>
+            `;
             })
             .catch(error =>{
                 console.error('Error: ', error);
@@ -41,36 +57,6 @@
 <p>Past queries</p>
 <div id="queries"></div>
 
-<script>
-    document.addEventListener('input', function(event) {
-        console.log('here')
-        if (event.target.id === 'email') {
-            const input = event.target.value;
-            const recentInputs = JSON.parse(localStorage.getItem('recentInputs')) || [];
-            console.log(input)
-
-            // Add the current input to the recent inputs array
-            recentInputs.push(input);
-
-            // Limit the number of recent inputs to a maximum of 5
-            if (recentInputs.length > 5) {
-                recentInputs.shift();
-            }
-
-            // Store the updated recent inputs array in local storage
-            localStorage.setItem('recentInputs', JSON.stringify(recentInputs));
-
-            // Update the recent inputs div with the latest inputs
-            const recentInputsDiv = document.getElementById('queries');
-            recentInputsDiv.innerHTML = `
-      <h4>Recent Inputs:</h4>
-      <ul>
-        ${recentInputs.map(input => `<li>${input}</li>`).join('')}
-      </ul>
-    `;
-        }
-    });
-</script>
 
 </body>
 </html>
