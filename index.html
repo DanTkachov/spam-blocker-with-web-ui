@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    function predictSpam(){
+        let emailInput = document.getElementById('email')
+        let resultDiv = document.getElementById('result')
+        let emailText = emailInput.value
+
+        fetch('http://localhost:5555/predict', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({email: emailText})
+        }).then(response => response.json())
+            .then(data => {
+                resultDiv.textContent = 'Prediction: ' + data.result
+            })
+            .catch(error =>{
+                console.error('Error: ', error);
+                resultDiv.textContent = 'An error as occurred: ' + error
+            })
+    }
+</script>
+<p> Test </p>
+<form >
+    <label for="email">Email: </label>
+    <input type="text" id="email" name="email">
+    <button type="button" onclick="predictSpam()">Predict</button>
+</form>
+<br>
+<div id="result"></div>
+</body>
+</html>
