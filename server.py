@@ -1,6 +1,5 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
-
 import model
 
 
@@ -17,15 +16,26 @@ class RequestHandler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods', 'POST')
-        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type, hx-current-url, hx-request, hx-target, hx-trigger')
         self.end_headers()
     def do_POST(self):
         if self.path == '/predict':
             # Get the email from the input box on the site
             content_length = int(self.headers['Content-Length'])
             post_data = self.rfile.read(content_length)
-            data = json.loads(post_data)
-            email_text = data['email']
+            print("Post Data:")
+            print(post_data)
+
+            # htmx form
+            from urllib.parse import parse_qs
+            data = parse_qs(post_data)
+            print(data)
+            email_text = data[b'email'][0].decode('utf-8')
+
+            # Vanilla JS
+            # data = json.loads(post_data)
+            # print(data)
+            # email_text = data['email']
 
             # load model
             prediction = model.model_predict(self._loaded_model, email_text, self._vectorizer)
