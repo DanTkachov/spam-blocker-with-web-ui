@@ -23,19 +23,17 @@ class RequestHandler(BaseHTTPRequestHandler):
             # Get the email from the input box on the site
             content_length = int(self.headers['Content-Length'])
             post_data = self.rfile.read(content_length)
-            print("Post Data:")
-            print(post_data)
 
             # htmx form
-            from urllib.parse import parse_qs
-            data = parse_qs(post_data)
-            print(data)
-            email_text = data[b'email'][0].decode('utf-8')
+            # from urllib.parse import parse_qs
+            # data = parse_qs(post_data)
+            # print(data)
+            # email_text = data[b'email'][0].decode('utf-8')
 
             # Vanilla JS
-            # data = json.loads(post_data)
-            # print(data)
-            # email_text = data['email']
+            data = json.loads(post_data)
+            print(data)
+            email_text = data['email']
 
             # load model
             prediction = model.model_predict(self._loaded_model, email_text, self._vectorizer)

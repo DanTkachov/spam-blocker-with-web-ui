@@ -8,43 +8,7 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-<script>
-    function predictSpam(){
-        let emailInput = document.getElementById('email')
-        let resultDiv = document.getElementById('result')
-        let emailText = emailInput.value
-
-        // Fetch AI result from backend
-        fetch('http://localhost:5555/predict', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json'},
-            body: JSON.stringify({email: emailText})
-        }).then(response => response.json())
-            .then(data => {
-                resultDiv.textContent = 'Prediction: ' + data.result
-
-                // Store the lastest inputs for htmx to display
-                const recentInputs = JSON.parse(localStorage.getItem('recentInputs')) || [];
-                recentInputs.unshift(emailText + '    Verdict: ' + data.result)
-                if(recentInputs.length > 5){
-                    recentInputs.pop()
-                }
-                localStorage.setItem('recentInputs', JSON.stringify(recentInputs));
-                const recentInputsDiv = document.getElementById('queries');
-                recentInputsDiv.innerHTML = `
-              <h4>Recent Inputs:</h4>
-              <ul>
-                ${recentInputs.map(input => `<li>${input}</li>`).join('')}
-              </ul>
-            `;
-            })
-            .catch(error =>{
-                console.error('Error: ', error);
-                resultDiv.textContent = 'An error has occurred: ' + error
-            })
-    }
-</script>
-<p> Test </p>
+<p> HTMX-Version </p>
 <form hx-post="http://localhost:5555/predict" hx-target="#result" hx-swap="outerhtml" hx-encoding="json">
     <label for="email">Email: </label>
     <input type="text" id="email" name="email">

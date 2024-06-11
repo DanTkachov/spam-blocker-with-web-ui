@@ -2,14 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href="index.css" rel="stylesheet">
     <title>Title</title>
-    <script src="https://unpkg.com/htmx.org@1.9.12"
+    <script crossorigin="anonymous"
             integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2"
-            crossorigin="anonymous"></script>
+            src="https://unpkg.com/htmx.org@1.9.12"></script>
 </head>
 <body>
 <script>
-    function predictSpam(){
+    function predictSpam() {
         let emailInput = document.getElementById('email')
         let resultDiv = document.getElementById('result')
         let emailText = emailInput.value
@@ -17,7 +18,7 @@
         // Fetch AI result from backend
         fetch('http://localhost:5555/predict', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json'},
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({email: emailText})
         }).then(response => response.json())
             .then(data => {
@@ -26,7 +27,7 @@
                 // Store the lastest inputs for htmx to display
                 const recentInputs = JSON.parse(localStorage.getItem('recentInputs')) || [];
                 recentInputs.unshift(emailText + '    Verdict: ' + data.result)
-                if(recentInputs.length > 5){
+                if (recentInputs.length > 5) {
                     recentInputs.pop()
                 }
                 localStorage.setItem('recentInputs', JSON.stringify(recentInputs));
@@ -38,17 +39,41 @@
               </ul>
             `;
             })
-            .catch(error =>{
+            .catch(error => {
                 console.error('Error: ', error);
                 resultDiv.textContent = 'An error has occurred: ' + error
             })
     }
 </script>
-<p> Test </p>
-<form >
+<script>
+    function adjustTextareaHeight(textarea) {
+        textarea.style.height = 'auto';
+        if (textarea.scrollHeight < 200) {
+            textarea.style.height = textarea.scrollHeight + 'px';
+        } else {
+            textarea.style.height = '200px'
+            textarea.style.overflowY = 'scroll'
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const textarea = document.getElementById('email');
+        adjustTextareaHeight(textarea);
+
+        // clear text on page refresh
+        textarea.value = ''
+        textarea.style.height = ''
+
+        textarea.addEventListener('input', function () {
+            adjustTextareaHeight(this);
+        });
+    });
+</script>
+<p> Vanilla JS version </p>
+<form>
     <label for="email">Email: </label>
-    <input type="text" id="email" name="email">
-    <button type="button" onclick="predictSpam()">Predict</button>
+    <textarea id="email" name="email" rows="1"></textarea>
+    <button onclick="predictSpam()" type="button">Classify</button>
 </form>
 <br>
 <div id="result"></div>

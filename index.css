@@ -1,0 +1,9 @@
+#email {
+  width: 100%;
+  resize: none;
+  overflow: hidden;
+  min-height: 20px; /* Set a minimum height for 1 row */
+  line-height: 20px; /* Set the line height to match the minimum height */
+  padding: 5px;
+  box-sizing: border-box;
+}
